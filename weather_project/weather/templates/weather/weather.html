@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather App</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Weather App</h1>
+        <form method="post" id="weather-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Get Weather</button>
+        </form>
+        
+        {% if weather_data %}
+            <div class="weather-info" id="weather-info">
+                <h2>Weather in {{ weather_data.city|capfirst }}:</h2>
+                <p>Temperature: {{ weather_data.temp }}°C</p>
+                <p>Feels Like: {{ weather_data.feels_like }}°C</p>
+                <p>Min Temperature: {{ weather_data.min_temp }}°C</p>
+                <p>Max Temperature: {{ weather_data.max_temp }}°C</p>
+                <p>Humidity: {{ weather_data.humidity }}%</p>
+                <p>Cloud Coverage: {{ weather_data.cloud_pct }}%</p>
+                <p>Wind Speed: {{ weather_data.wind_speed }} m/s</p>
+                <p>Wind Direction: {{ weather_data.wind_degrees }}°</p>
+                <p>Sunrise: {{ weather_data.sunrise }}</p>
+                <p>Sunset: {{ weather_data.sunset }}</p>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        document.getElementById('weather-form').addEventListener('submit', function(event) {
+            const cityInput = document.querySelector('input[name="city"]');
+            if (!cityInput.value.trim()) {
+                alert('Please enter a city name.');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
+
